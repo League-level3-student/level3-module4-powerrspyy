@@ -1,5 +1,11 @@
 package _00_IntroToStacks;
 
+import java.awt.Frame;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 public class _02_TextUndoRedo {
     /* 
      * Create a JFrame with a JPanel and a JLabel.
@@ -16,6 +22,25 @@ public class _02_TextUndoRedo {
      * pressed, the top Character is popped  off the Stack and added back to
      * the JLabel.
      */
+
+	JFrame frame = new JFrame("Text Editor");
+	
+	JPanel panel = new JPanel();
+	
+	JLabel label = new JLabel();
+	
+	public static void main(String[] array) {
+		new _02_TextUndoRedo();
+		
+		
+	}
+	public _02_TextUndoRedo() {
+		label.setText("");
+		panel.add(label);
+		frame.add(panel);
+		frame.pack();
+		frame.setVisible(true);
+	}
 
 
 }
