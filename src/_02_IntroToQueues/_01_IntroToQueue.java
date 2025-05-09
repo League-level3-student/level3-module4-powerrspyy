@@ -1,4 +1,9 @@
 package _02_IntroToQueues;
+
+import java.util.ArrayDeque;
+import java.util.Random;
+import java.util.Stack;
+
 /* 
  * OBJECTIVE:
  * 1. Push 100 double values onto a Stack.
@@ -34,6 +39,28 @@ public class _01_IntroToQueue {
     public static void main(String[] args) {
         // 1. Create a Stack of Doubles using the Stack class
         //    Note: you have to use the capitalized Double and not double
+    	Stack<Double> stack = new Stack<>();
+    	
+    	Random random = new Random();
+    	
+    	for(int i = 0; i < 100; i ++) {
+    		stack.push(random.nextDouble() * 100);
+    	}
+    	
+    	ArrayDeque<Double> queue = new ArrayDeque<>();
+    	
+    	while(!stack.isEmpty() || !queue.isEmpty()) {
+    		for(int i = 0; i < 5; i ++) {
+    			if(!stack.isEmpty()) {
+    				queue.add(stack.pop());
+    			}
+    		}
+    		System.out.println("Next Batch:");
+    		for(int i = 0;  i < Math.min(queue.size(), 1 + random.nextInt(5)); i++) {
+    			System.out.println("Next Value: " + queue.remove()); 
+    			}
+    		
+    	}
 
         // 2. Use a loop to add 100 random doubles between 0 and 100 to the Stack
 
