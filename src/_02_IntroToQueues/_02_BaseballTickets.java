@@ -46,9 +46,9 @@ public class _02_BaseballTickets {
         	if(position == 0) {
         		minutes++;
         		tickets_left = ticketsQueue.remove();
-        		next = tickets_left - 1;
-        		ticketsQueue.add(next);
-        		position = ticketsQueue.size();
+        		tickets_left --;
+        		ticketsQueue.add(tickets_left);
+        		position = ticketsQueue.size() - 1;
         	}
         	else {
         		next = ticketsQueue.remove() - 1;
