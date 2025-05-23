@@ -8,7 +8,7 @@ public class Cell {
     private int row;
     private int col;
 
-    private int size = 100;
+    private int size = 10;
 
     private boolean visited;
 
@@ -17,7 +17,7 @@ public class Cell {
     private boolean eastWall; 
     private boolean westWall;
 
-    public Cell(int row, int col){
+    public Cell(int col, int row){
         this.row = row;
         this.col = col;
 

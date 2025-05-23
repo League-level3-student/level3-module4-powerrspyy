@@ -31,13 +31,17 @@ public class Hangman implements KeyListener, ActionListener{
 	
 	JLabel text = new JLabel();
 	
-	int lives = 10;
+	int start_lives = 10;
+	
+	int lives = start_lives;
 	
 	String word;
 	
 	Set<Character> guesses = new HashSet<>();
 	
 	Stack<String> stack = new Stack<>();
+	
+	String obscText = "";
 	
 	public Hangman() {
 		
@@ -56,8 +60,8 @@ public class Hangman implements KeyListener, ActionListener{
 		word = stack.pop();
 		
 				
-		
-		text.setText(obscurify(word, guesses) + " lives: " + lives);
+		obscText = obscurify(word, guesses);
+		text.setText(obscText + " lives: " + lives);
 		panel.add(text);
 		frame.addKeyListener(this);
 		frame.add(panel);
@@ -105,11 +109,12 @@ public class Hangman implements KeyListener, ActionListener{
 		// TODO Auto-generated method stub
 		Character letter = arg0.getKeyChar();
 		if(Character.isAlphabetic(Character.toLowerCase(letter))) {
-		if(guesses.add(Character.toLowerCase(letter))) {
-			lives --;
-		}
-
-		text.setText(obscurify(word, guesses) + " lives: " + lives);
+		if(lives >= 1){
+			if(guesses.add(Character.toLowerCase(letter))) {
+				if(obscText.equals(obscurify(word, guesses)))lives --;
+			}}
+		obscText = obscurify(word, guesses);
+		text.setText(obscText + " lives: " + lives);
 		if (obscurify(word, guesses).indexOf('_') == -1) {
 			int choice = JOptionPane.showOptionDialog(frame, "You guessed the word! Do you want to play again?", "Victory", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, 
 					new String[] {"no", "yes"}, "yes");
@@ -117,7 +122,7 @@ public class Hangman implements KeyListener, ActionListener{
 				
 				word = stack.pop();
 				guesses.clear();
-				lives = 10;
+				lives = start_lives;
 				text.setText(obscurify(word, guesses) + " lives: " + lives);
 			}
 			else {
@@ -125,6 +130,21 @@ public class Hangman implements KeyListener, ActionListener{
 			}
 			
 			
+		}
+		else if(lives <= 0) {
+			int choice = JOptionPane.showOptionDialog(frame, "You lost, the word was " + word + "! Do you want to play again?", "Defeat", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, 
+					new String[] {"no", "yes"}, "yes");
+			if (choice == 1 && !stack.empty()) {
+				
+				word = stack.pop();
+				guesses.clear();
+				lives = start_lives;
+				text.setText(obscurify(word, guesses) + " lives: " + lives);
+			}
+			else {
+				System.exit(0);
+			}
+
 		}
 		}
 	}

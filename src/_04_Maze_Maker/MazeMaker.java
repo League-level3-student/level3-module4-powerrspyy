@@ -24,18 +24,77 @@ public class MazeMaker {
         //    the opposite wall and remove its exterior wall. This will be the
         //    finish line.
         
-        // 2. select a random cell in the maze to start 
+        Cell start = maze.cells[randGen.nextInt(cols)][0];
+        start.setNorthWall(false);
         
-        // 3. call the selectNextPath method with the randomly selected cell
+        Cell end = maze.cells[randGen.nextInt(cols)][rows-1];
+        end.setSouthWall(false);
+        
+        
+        // 2. select a randGenom cell in the maze to start 
+        
+        // 3. call the selectNextPath method with the randGenomly selected cell
+        Cell curCell = maze.cells[randGen.nextInt(cols)][randGen.nextInt(rows)];
+        while(curCell != null) {
+        	curCell = selectNextPath(curCell);
+        }
+        
 
         return maze;
     }
 
     // 4. Complete the selectNextPathMethod
-    private static void selectNextPath(Cell currentCell) {
+    private static Cell selectNextPath(Cell curCell) {
         // A. SET currentCell as visited
+    	curCell.setBeenVisited(true);
 
         // B. check for unvisited neighbors using the cell
+    	int[] up = {curCell.getCol(), curCell.getRow()-1};
+    	int[] down = {curCell.getCol(), curCell.getRow()+1};
+    	int[] left = {curCell.getCol()-1, curCell.getRow()};
+    	int[] right = {curCell.getCol()+1, curCell.getRow()};
+    	
+    	ArrayList<Cell> nearby = new ArrayList<>();
+    	if(valid_cell(up[0], up[1])) {
+    		Cell up_cell = maze.cells[up[0]][up[1]];
+    		if(!up_cell.hasBeenVisited()) {
+    			nearby.add(up_cell);
+    		}
+    	}
+    	if(valid_cell(down[0], down[1])) {
+    		Cell down_cell = maze.cells[down[0]][down[1]];
+    		if(!down_cell.hasBeenVisited()) {
+    			nearby.add(down_cell);
+    		}
+    	}
+    	if(valid_cell(left[0], left[1])) {
+    		Cell left_cell = maze.cells[left[0]][left[1]];
+    		if(!left_cell.hasBeenVisited()) {
+    			nearby.add(left_cell);
+    		}
+    	}
+    	if(valid_cell(right[0], right[1])) {
+    		Cell right_cell = maze.cells[right[0]][right[1]];
+    		if(!right_cell.hasBeenVisited()) {
+    			nearby.add(right_cell);
+    		}
+    	}
+    	
+    	if(nearby.size()>=1) {
+    		int selected = randGen.nextInt(nearby.size());
+    		Cell next = nearby.get(selected);
+    		uncheckedCells.push(next);
+    		removeWalls(curCell, next);
+    		return next;
+    		
+    	}
+    	else {
+    		if(!uncheckedCells.empty()) {
+    			curCell = uncheckedCells.pop();
+    			return curCell;
+    		}
+    	}
+		return null;
 
         // C. if has unvisited neighbors,
 
@@ -61,6 +120,16 @@ public class MazeMaker {
         // D1c. call the selectNextPath method with the current cell
 
     }
+    
+    private static boolean valid_cell(int x, int y) {
+    	if(x < 0 || x >= cols || y < 0 || y >= rows)return false;
+    	else return true;
+    }
+    private static void rerun(Cell curCell) {
+    	selectNextPath(curCell);
+    }
+    
+    
 
     // This method will check if c1 and c2 are adjacent.
     // If they are, the walls between them are removed.
